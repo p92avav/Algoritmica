@@ -53,4 +53,10 @@ void calcularTiemposEstimadosPolinomico(const vector <double> &n, const vector <
 
 double calcularTiempoEstimadoPolinomico(const double &n, const vector <double> &a);
 
+void ajusteFactorial(vector <double> &numeroElementos, vector <double> &tiemposReales, vector <double> &a);
+
+double factorial(double n);
+
+void calcularTiemposEstimadosFactorial(const vector <double> &n, const vector <double> &tiemposReales, const vector <double> &a, vector
+<double> &tiemposEstimados);
 #endif

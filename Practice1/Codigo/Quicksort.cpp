@@ -61,6 +61,8 @@ void algoritmoQuicksort()
     vector <double> numeroElementos;
     vector <double> a;
 
+    cout <<"Calculando ... \n"<<endl;
+
     tiemposOrdenacionQuickSort(nMin, nMax, incremento ,repeticiones, tiemposReales, numeroElementos);
 
     ofstream fich("tiemposRealesQuicksort.txt");
@@ -113,21 +115,39 @@ void algoritmoQuicksort()
 
         double numEstimado = calcularTiempoEstimadoNlogN(num, a);
 
-        double seconds = numEstimado / 1000000;
-        double minutes = seconds / 60;
-        double hours = minutes / 60;
-        double days = hours / 24;
-        double years = days / 365;
+        long seconds = numEstimado / 1000000;
+        long years = (seconds/31536000);
+        long days = (seconds/86400) %365;
+        long hours = (seconds/3600) %24;
+        long minutes = (seconds/60) %60;
+        long ss = seconds%60;
 
-        cout <<"\n\nPara un tamaño de " << num <<" elementos el tiempo estimado es :"<<endl;
+        cout <<"\n\nPara un tamaño de " << num <<" elementos el tiempo estimado es : "<< numEstimado <<" microsegundos ";
+        if(ss > 0)
+        {   
+            cout<<", es decir: "<<endl;
+            cout << ss << " segundos"<<endl;
+        }
 
-        cout<< seconds <<" segundos, ";
-        cout<< minutes <<" minutos, ";
-        cout<< hours <<" horas, ";
-        cout<< days <<" dias, ";
-        cout<< years <<" años ";
+        if(minutes > 0)
+        {
+            cout << minutes << " minutos"<<endl;
+        }
 
+        if(hours > 0)
+        {
+            cout << hours << " horas"<<endl;
+        }
 
+        if(days > 0)
+        {
+            cout<< days <<" dias"<<endl;
+        }
+
+        if(years > 0)
+        {
+            cout<< years <<" años ";
+        }
 
     }while(num != 0);
 }

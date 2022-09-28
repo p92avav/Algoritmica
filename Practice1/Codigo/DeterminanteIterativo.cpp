@@ -44,7 +44,7 @@ vector <double> &tiemposReales, vector <double> &n, int opc)
                 break;
                 default:
                 break;
-            }
+            }            
 
             reloj.start();
             double determinante = determinanteTriangulacion(matriz, i);
@@ -145,27 +145,49 @@ void DeterminanteIterativo()
             exit(EXIT_SUCCESS);
         }
 
-        double numEstimado = calcularTiempoEstimadoPolinomico(num, a);
+        double numEstimado = calcularTiempoEstimadoNlogN(num, a);
 
-        double seconds = numEstimado / 1000000;
-        double minutes = seconds / 60;
-        double hours = minutes / 60;
-        double days = hours / 24;
-        double years = days / 365;
+        long seconds = numEstimado / 1000000;
+        long years = (seconds/31536000);
+        long days = (seconds/86400) %365;
+        long hours = (seconds/3600) %24;
+        long minutes = (seconds/60) %60;
+        long ss = seconds%60;
 
-        cout <<"\n\nPara una matriz de orden " << num <<" el tiempo estimado es : ";
+        cout <<"\n\nPara una matriz de orden " << num <<" el tiempo estimado es : "<< numEstimado <<" microsegundos ";
+        if(ss > 0)
+        {   
+            cout<<", es decir: "<<endl;
+            cout << ss << " segundos"<<endl;
+        }
 
-        cout<< seconds <<" segundos, ";
-        cout<< minutes <<" minutos, ";
-        cout<< hours <<" horas, ";
-        cout<< days <<" dias, ";
-        cout<< years <<" años ";
+        if(minutes > 0)
+        {
+            cout << minutes << " minutos"<<endl;
+        }
 
+        if(hours > 0)
+        {
+            cout << hours << " horas"<<endl;
+        }
+
+        if(days > 0)
+        {
+            cout<< days <<" dias"<<endl;
+        }
+
+        if(years > 0)
+        {
+            cout<< years <<" años ";
+        }
+        
     }while(num != 0);  
 }
 
 double determinanteTriangulacion(vector < vector < double > > &Matriz, int n)
 {
+
+
     vector < vector < double > > matrizAux;
 	matrizAux = vector< vector< double > >(n, vector< double >(n));
 
@@ -176,4 +198,5 @@ double determinanteTriangulacion(vector < vector < double > > &Matriz, int n)
     double determinante = productoDiagonal(Matriz);
 
     return determinante;
+    
 }

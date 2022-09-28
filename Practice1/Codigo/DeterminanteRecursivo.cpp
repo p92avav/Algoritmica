@@ -2,18 +2,54 @@
 
 using namespace std;
 
-//vector < vector < double > > matrizAux;
-//matrizAux = vector< vector< double > >(n, vector< double >(n));
-
 double determinanteRecursivo(vector < vector < double > > &matriz, int n)
 {
-//
+    double det = 0;
+
+    if (n == 1)
+    {
+        det = matriz[0][0];
+    }
+    else if (n == 2)
+    {
+        det = matriz[0][0] * matriz[1][1] - matriz[0][1] * matriz[1][0];
+    }
+    else
+    {
+        for (int i = 0; i < n; i++)
+        {
+            vector < vector < double > > matrizAux;
+            matrizAux = vector< vector< double > >(n, vector< double >(n));
+
+            for (int j = 0; j < n; j++)
+            {
+                for (int k = 0; k < n; k++)
+                {
+                    if (j != 0 && k != i)
+                    {
+                        if (k < i)
+                        {
+                            matrizAux[j - 1][k] = matriz[j][k];
+                        }
+                        else
+                        {
+                            matrizAux[j - 1][k - 1] = matriz[j][k];
+                        }
+                    }
+                }
+            }
+
+            det += pow(-1, i) * matriz[0][i] * determinanteRecursivo(matrizAux, n - 1);
+        }
+    }
+
+    return det;
 }
 
-void tiempoDeterminanteRecursivo(int nMin, int nMax, int incremento, int repeticiones, 
+void tiemposDeterminanteRecursivo(int nMin, int nMax, int incremento, int repeticiones, 
 vector <double> &tiemposReales, vector <double> &n, int opc)
 {
-    Clock reloj;
+Clock reloj;
     for(int i = nMin; i <= nMax; i )
     {
         
@@ -36,7 +72,6 @@ vector <double> &tiemposReales, vector <double> &n, int opc)
                     }
                 }
                 break;
-                
                 case 2:
                 for(int k = 0; k < i; k++)
                 {
@@ -53,29 +88,20 @@ vector <double> &tiemposReales, vector <double> &n, int opc)
                 break;
                 default:
                 break;
-            }
+            }            
 
-            for(int x = 0; x < matriz.size(); x++)
-            {
-                for(int y = 0; y < matriz.size(); y++)
-                {
-                    cout <<"matriz ("<<x<<", "<<y<<") = "<<matriz[x][y]<<endl;
-                }
-            }
             reloj.start();
-            //double determinante = determinanteRecursivo(matriz, i);
-
+            double determinante = determinanteRecursivo(matriz, i);
             if(reloj.isStarted())
             {
                 reloj.stop();
                 tiemposReales.push_back(reloj.elapsed());
             }
+
             n.push_back(i);
-            cout <<"Determinante es "<<endl;
         }
         i = i + incremento;
-    }
-    
+    }  
 }
 
 void algoritmoRecursivo()
@@ -115,9 +141,9 @@ void algoritmoRecursivo()
     
     cout <<"\nCalculando ..."<<endl;
 
-    tiempoDeterminanteIterativo(nMin, nMax, incremento,repeticiones, tiemposReales, ordenesMatriz, opc);
+    tiemposDeterminanteRecursivo(nMin, nMax, incremento,repeticiones, tiemposReales, ordenesMatriz, opc);
     
-    ofstream fich("tiemposRealesDetIter.txt");
+    ofstream fich("tiemposRealesDetRec.txt");
     if (!fich)
     {
         cout << "Error al abrir el archivo\n";
@@ -128,14 +154,14 @@ void algoritmoRecursivo()
     {
         fich << ordenesMatriz[i] << " " << tiemposReales[i] << endl;
     }
-    /*
-    ajustePolinomico(ordenesMatriz, tiemposReales, a);
-    calcularTiemposEstimadosPolinomico(ordenesMatriz, a, tiemposEstimados);
+    
+    ajusteFactorial(ordenesMatriz, tiemposReales, a);
+    calcularTiemposEstimadosFactorial(ordenesMatriz, tiemposReales, a, tiemposEstimados);
     calcularCoeficienteDeterminacion(tiemposReales, tiemposEstimados);
 
     cout <<"\nLa funcion del ajuste es : t(n) = "<<a[0]<<" + "<<a[1]<<" * n + "<<a[2]<<" * n^2 + "<<a[3]<<" * n^3 "<<endl;
 
-    ofstream fich2("datosFinalesDetIter.txt");
+    ofstream fich2("datosFinalesDetRec.txt");
     if (!fich2)
     {
         cout << "Error al abrir el archivo\n";
@@ -163,22 +189,42 @@ void algoritmoRecursivo()
             exit(EXIT_SUCCESS);
         }
 
-        double numEstimado = calcularTiempoEstimadoPolinomico(num, a);
+        double numEstimado = calcularTiempoEstimadoNlogN(num, a);
 
-        double seconds = numEstimado / 1000000;
-        double minutes = seconds / 60;
-        double hours = minutes / 60;
-        double days = hours / 24;
-        double years = days / 365;
+        long seconds = numEstimado / 1000000;
+        long years = (seconds/31536000);
+        long days = (seconds/86400) %365;
+        long hours = (seconds/3600) %24;
+        long minutes = (seconds/60) %60;
+        long ss = seconds%60;
 
-        cout <<"\n\nPara una matriz de orden " << num <<" el tiempo estimado es : ";
+        cout <<"\n\nPara una matriz de orden " << num <<" el tiempo estimado es : "<< numEstimado <<" microsegundos ";
+        if(ss > 0)
+        {   
+            cout<<", es decir: "<<endl;
+            cout << ss << " segundos"<<endl;
+        }
 
-        cout<< seconds <<" segundos, ";
-        cout<< minutes <<" minutos, ";
-        cout<< hours <<" horas, ";
-        cout<< days <<" dias, ";
-        cout<< years <<" años ";
+        if(minutes > 0)
+        {
+            cout << minutes << " minutos"<<endl;
+        }
 
-    }while(num != 0); */
+        if(hours > 0)
+        {
+            cout << hours << " horas"<<endl;
+        }
+
+        if(days > 0)
+        {
+            cout<< days <<" dias"<<endl;
+        }
+
+        if(years > 0)
+        {
+            cout<< years <<" años ";
+        }
+
+    }while(num != 0); 
 }
 

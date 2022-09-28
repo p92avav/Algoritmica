@@ -2,8 +2,6 @@
 
 using namespace std;
 
-
-
 void resolverSistemaEcuaciones(vector < vector < double > > A, vector < vector < double > > B, int n, vector < vector < double > > &X)
 {
 	vector < vector < double > > inversa; //matriz inversa de la matriz de coeficientes que hay que calcular para resolver el sistema.
@@ -31,7 +29,6 @@ void resolverSistemaEcuaciones(vector < vector < double > > A, vector < vector <
 	
 	//Se muestra la inversa
 	multiplicarMatrices(inversa, B, X);
-	cout<<"Hace todo"<<endl;
 }
 
 double sumatorio(vector <double> &n, vector <double> &t, double expN, double expT)
@@ -382,5 +379,70 @@ double calcularTiempoEstimadoPolinomico(const double &n, const vector <double> &
 	return estTime;
 }
 
+void ajusteFactorial(vector <double> &numeroElementos, vector <double> &tiemposReales,
+vector <double> &a)
+{
+	vector < vector < double > > A;
+	A = vector< vector< double > >(2, vector< double >(2));
+	
+	vector <double> zetaValues;
 
+	for(int i = 0; i < numeroElementos.size(); i++)
+	{
+		zetaValues.push_back(factorial(numeroElementos[i]));
+	}
 
+	for(int i = 0; i < 2; i++)
+	{
+		for(int j = 0; j < 2; j++)
+		{
+
+			A[i][j] = sumatorio(zetaValues, tiemposReales, i+j, 0);
+		}
+	}
+
+	vector < vector < double > > B;
+	B = vector< vector< double > >(2, vector< double >(1));
+
+	for(int i = 0; i < 2; i++)
+	{
+		B[i][0] = sumatorio(zetaValues, tiemposReales, i, 1);
+	}
+
+	
+	vector < vector < double > > X;
+	X = vector< vector< double > >(2, vector< double >(1));
+
+  	resolverSistemaEcuaciones(A, B, 2, X);
+
+	for(int i = 0; i < X.size(); i++)
+	{
+		a.push_back(X[i][0]);
+	}
+}
+
+double factorial(double n)
+{
+	double factorial = 1;
+
+	for(int i = 1; i <= n; i++)
+	{
+		factorial = factorial * i;
+	}
+
+	return factorial;
+}
+
+void calcularTiemposEstimadosFactorial(const vector <double> &n, const vector <double> &tiemposReales, const vector <double> &a, vector
+<double> &tiemposEstimados)
+{
+	double a0 = a[0];
+	double a1 = a[1];
+
+	for(int i = 0; i < n.size(); i++)
+	{
+		double zeta = factorial(n[i]);
+		double estTime = a0 + a1 * zeta;
+		tiemposEstimados.push_back(estTime);
+	}
+}
