@@ -1,0 +1,184 @@
+#include "DeterminanteRecursivo.hpp"
+
+using namespace std;
+
+//vector < vector < double > > matrizAux;
+//matrizAux = vector< vector< double > >(n, vector< double >(n));
+
+double determinanteRecursivo(vector < vector < double > > &matriz, int n)
+{
+//
+}
+
+void tiempoDeterminanteRecursivo(int nMin, int nMax, int incremento, int repeticiones, 
+vector <double> &tiemposReales, vector <double> &n, int opc)
+{
+    Clock reloj;
+    for(int i = nMin; i <= nMax; i )
+    {
+        
+        for(int j = 0; j < repeticiones; j++)
+        {
+            vector < vector < double > > matriz;
+            matriz = vector< vector< double > >(i, vector< double >(i));
+
+            switch(opc)
+            {
+                case 1: 
+                for(int k = 0; k < i; k++)
+                {
+                    for(int m = 0; m < i; m++)
+                    {
+                        cout <<"Introduzca el valor de la matriz de orden "<<i<<" en la posicion ["<<k<<"] ["<<m<<"]:"<<endl;
+                        double value;
+                        cin >> value;
+                        matriz[k][m] = value;
+                    }
+                }
+                break;
+                
+                case 2:
+                for(int k = 0; k < i; k++)
+                {
+                    for(int m = 0; m < i; m++)
+                    {
+                        double f = (double)rand() / RAND_MAX;
+                        double value = 0.95 + f * (1.05 - 0.95); 
+                        matriz[k][m] = value;
+                    }
+                }
+                break;
+                case 0:
+                exit(EXIT_SUCCESS);
+                break;
+                default:
+                break;
+            }
+
+            for(int x = 0; x < matriz.size(); x++)
+            {
+                for(int y = 0; y < matriz.size(); y++)
+                {
+                    cout <<"matriz ("<<x<<", "<<y<<") = "<<matriz[x][y]<<endl;
+                }
+            }
+            reloj.start();
+            //double determinante = determinanteRecursivo(matriz, i);
+
+            if(reloj.isStarted())
+            {
+                reloj.stop();
+                tiemposReales.push_back(reloj.elapsed());
+            }
+            n.push_back(i);
+            cout <<"Determinante es "<<endl;
+        }
+        i = i + incremento;
+    }
+    
+}
+
+void algoritmoRecursivo()
+{
+    cout << "Indique el orden minimo de la matriz" << endl;
+    int nMin;
+    cin >> nMin;
+
+    cout << "Indique el orden maximo de la matrix" << endl;
+    int nMax;
+    cin >> nMax;
+
+    while(nMax <= nMin)
+    {
+        cout << "Error, introduzca un orden mayor al indicado como 'orden minimo de la matriz'" <<endl;
+        cin >> nMax;
+    }
+
+    cout << "Indique el incremento en el orden de la matriz" << endl;
+    int incremento;
+    cin >> incremento;
+
+    cout << "Indique el numero de repeticiones para cada prueba" << endl;
+    int repeticiones;
+    cin >> repeticiones;
+
+    cout << "Introduzca una de las siguientes opciones, o '-1' para salir del programa" <<endl;
+    cout << "1 - Rellenar las matrices manualmente" <<endl;
+    cout << "2 - Rellenar las matrices aleatoriamente" <<endl;
+    int opc;
+    cin >> opc;
+    
+    vector<double> a;
+    vector <double> tiemposReales;
+    vector <double> ordenesMatriz;
+    vector <double> tiemposEstimados;
+    
+    cout <<"\nCalculando ..."<<endl;
+
+    tiempoDeterminanteIterativo(nMin, nMax, incremento,repeticiones, tiemposReales, ordenesMatriz, opc);
+    
+    ofstream fich("tiemposRealesDetIter.txt");
+    if (!fich)
+    {
+        cout << "Error al abrir el archivo\n";
+        exit(EXIT_FAILURE);
+    }
+
+    for(int i = 0; i < tiemposReales.size(); i++)
+    {
+        fich << ordenesMatriz[i] << " " << tiemposReales[i] << endl;
+    }
+    /*
+    ajustePolinomico(ordenesMatriz, tiemposReales, a);
+    calcularTiemposEstimadosPolinomico(ordenesMatriz, a, tiemposEstimados);
+    calcularCoeficienteDeterminacion(tiemposReales, tiemposEstimados);
+
+    cout <<"\nLa funcion del ajuste es : t(n) = "<<a[0]<<" + "<<a[1]<<" * n + "<<a[2]<<" * n^2 + "<<a[3]<<" * n^3 "<<endl;
+
+    ofstream fich2("datosFinalesDetIter.txt");
+    if (!fich2)
+    {
+        cout << "Error al abrir el archivo\n";
+        exit(EXIT_FAILURE);
+    }
+
+    for(int i = 0; i < tiemposReales.size(); i++)
+    {
+        fich2 << ordenesMatriz[i] << " "<<tiemposReales[i] <<" "<< tiemposEstimados[i] << endl;
+    }
+
+    double num;
+    do
+    {
+        cout <<"\n\nIndique un determinado numero de elementos para estimar el tiempo que tardaria en ordenarse. Introduzca 0 para salir"<<endl;
+        cin >> num;
+        while(num < 1 && num != 0)
+        {
+            cout<<"Introduzca un numero mayor a 1"<<endl;
+            cin >> num;
+        }
+
+        if(num == 0)
+        {
+            exit(EXIT_SUCCESS);
+        }
+
+        double numEstimado = calcularTiempoEstimadoPolinomico(num, a);
+
+        double seconds = numEstimado / 1000000;
+        double minutes = seconds / 60;
+        double hours = minutes / 60;
+        double days = hours / 24;
+        double years = days / 365;
+
+        cout <<"\n\nPara una matriz de orden " << num <<" el tiempo estimado es : ";
+
+        cout<< seconds <<" segundos, ";
+        cout<< minutes <<" minutos, ";
+        cout<< hours <<" horas, ";
+        cout<< days <<" dias, ";
+        cout<< years <<" años ";
+
+    }while(num != 0); */
+}
+
