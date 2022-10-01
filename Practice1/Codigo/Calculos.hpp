@@ -59,4 +59,6 @@ double factorial(double n);
 
 void calcularTiemposEstimadosFactorial(const vector <double> &n, const vector <double> &tiemposReales, const vector <double> &a, vector
 <double> &tiemposEstimados);
+
+double calcularTiempoEstimadoFactorial(const double &n, const vector <double> &a);
 #endif

@@ -189,7 +189,7 @@ void algoritmoRecursivo()
             exit(EXIT_SUCCESS);
         }
 
-        double numEstimado = calcularTiempoEstimadoNlogN(num, a);
+        double numEstimado = calcularTiempoEstimadoFactorial(num, a);
 
         long seconds = numEstimado / 1000000;
         long years = (seconds/31536000);

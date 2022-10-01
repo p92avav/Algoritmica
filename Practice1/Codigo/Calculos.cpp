@@ -446,3 +446,15 @@ void calcularTiemposEstimadosFactorial(const vector <double> &n, const vector <d
 		tiemposEstimados.push_back(estTime);
 	}
 }
+
+//Calcular tiempo estimado factorial
+double calcularTiempoEstimadoFactorial(const double &n, const vector <double> &a)
+{
+	double a0 = a[0];
+	double a1 = a[1];
+
+	double zeta = factorial(n);
+	double estTime = a0 + a1 * zeta;
+
+	return estTime;
+}
