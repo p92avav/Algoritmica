@@ -1,42 +1,36 @@
-#include "algoritmo.hpp"
+#include "algoritmo.cpp"
 
 using namespace std;
 
-void printMenu(double & errorMax, int  & opc)
+void printMenu(int  & opc)
 {
     cout <<"Indique la opcion que desea: "<<endl;
     cout <<" 1 - Metodo 1"<<endl;   
     cout <<" 2 - Metodo 2"<<endl;
-    cout <<" Cualquier otro numero - Salir"<<endl;
+    cout <<" Pulse cualquier otro numero para salir"<<endl;
     cin >> opc;
-    
-    cout<<"Indique el error maximo: ";
-    cin >> errorMax;
+
 }
 
 
 int main()
 {
     system("clear");
-    double eMax;
     int opc;
 
-    cout<<"Introduzca el valor de eMax: ";
-    cin>>eMax;
 
-    printMenu(eMax, opc);
+    printMenu(opc);
 
-    cout<<"eMax: "<<eMax<<" opc: "<<opc<<endl;
+    cout<<" opc: "<<opc<<endl;
 
     switch(opc)
     {
         case 1:
-            //TODO: Metodo1
+            metodo1();
             break;
 
         case 2:
-            //TODO: Metodo2
-
+            metodo2();
             break;
 
         default:
