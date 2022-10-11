@@ -10,6 +10,21 @@ void printMenu(int  & opc)
     cout <<"Pulse cualquier otro numero para salir"<<endl;
     cin >> opc;
 
+        switch(opc)
+        {
+            case 1:
+                metodo1();
+                break;
+
+            case 2:
+                metodo2();
+                break;
+
+            default:
+                exit(EXIT_SUCCESS);
+                break;
+        }
+
 }
 
 
@@ -20,19 +35,10 @@ int main()
 
     printMenu(opc);
 
-    switch(opc)
+    while(opc != 0)
     {
-        case 1:
-            metodo1();
-            break;
-
-        case 2:
-            metodo2();
-            break;
-
-        default:
-            exit(EXIT_SUCCESS);
-            break;
+        printMenu(opc);
     }
 
+    exit(EXIT_SUCCESS);
 }
