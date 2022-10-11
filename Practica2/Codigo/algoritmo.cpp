@@ -31,16 +31,15 @@ void algoritmoMetodo2(SerieTemporal &serieTemporal, int izq, int der, double eMa
 
     if (eMax > eMaxUser)
     {
-        serieTemporal.dominantePunto(posicionEMax, true);
+        serieTemporal.dominantePunto((izq+der)/2, true);
 
-        int posicionMaximo1 =0;
-        int posicionMaximo2 =0;
+        int posicionMaximo1 = 0;
+        int posicionMaximo2 = 0;
 
-        algoritmoMetodo2(serieTemporal, izq, ((der+izq)/2), eMaxUser, posicionMaximo1);
+        algoritmoMetodo2(serieTemporal, izq, ((izq+der)/2), eMaxUser, posicionMaximo1);
         algoritmoMetodo2(serieTemporal, ((izq+der)/2), der, eMaxUser, posicionMaximo2);
     }
 }
-
 
 void metodo1()
 {
@@ -63,10 +62,12 @@ void metodo1()
     SerieTemporal serieTemporal(nombreFicheroEntrada);
     
     int posicionEMax;
-    double eMax = serieTemporal.calcularEmaxEntreDosPuntos(0, serieTemporal.numeroPuntosSerieTemporal() - 1, posicionEMax);
+
     serieTemporal.dominantePunto(0, true);
     serieTemporal.dominantePunto(serieTemporal.numeroPuntosSerieTemporal()-1, true);
+
     algoritmoMetodo1(serieTemporal, 0, serieTemporal.numeroPuntosSerieTemporal()-1, eMaxUser, posicionEMax);
+
     serieTemporal.guardarSegmentacion(nombreFicheroSalida);
 
     long double ISE;
@@ -84,7 +85,7 @@ void metodo1()
 void metodo2()
 {
     cout <<"Introduzca el error Maximo deseado: ";
-    double eMaxUser; 
+    double eMaxUser;
     cin >> eMaxUser;
 
     cout << "Introduzca el nombre del archivo de texto: ";
@@ -92,7 +93,6 @@ void metodo2()
     cin >> nombreArchivo;
     char *nombreFicheroEntrada = new char[nombreArchivo.length() + 1];
     strcpy(nombreFicheroEntrada, nombreArchivo.c_str());
-
     
     cout <<"Introduzca el nombre del archivo de salida: ";
     string nombreArchivoSalida;
@@ -103,10 +103,10 @@ void metodo2()
     SerieTemporal serieTemporal(nombreFicheroEntrada);
     
     int posicionEMax;
-    double eMax = serieTemporal.calcularEmaxEntreDosPuntos(0, serieTemporal.numeroPuntosSerieTemporal() - 1, posicionEMax);
-    
+
     serieTemporal.dominantePunto(0, true);
     serieTemporal.dominantePunto(serieTemporal.numeroPuntosSerieTemporal()-1, true);
+
     algoritmoMetodo2(serieTemporal, 0, serieTemporal.numeroPuntosSerieTemporal()-1, eMaxUser, posicionEMax);
 
     serieTemporal.guardarSegmentacion(nombreFicheroSalida);

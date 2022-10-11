@@ -1,0 +1,6 @@
+set terminal postscript eps color
+set output "Metodo 2.eps"
+set key right bottom
+set title "Metodo 2"
+set xlabel "Puntos de la serie"
+plot 'BBVA.txt' using 1:2 t "Serie original" w l, 'bbvaMetodo2.txt' using 1:2 t "Serie segmentada" w l 
