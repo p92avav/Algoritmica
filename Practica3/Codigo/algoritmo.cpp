@@ -20,61 +20,56 @@ void minimoValorVector(vector<long double> &v, long double &minimo, int &posicio
     }
 }
 
-void algoritmoMinimizarISE(SerieTemporal &serieTemporal, int izq, int der, double segPoints)
+void algoritmoMinimizarEMax(SerieTemporal &serieTemporal, int izq, int der, double segPoints, vector<int> &puntosDominantes)
 {
-
-    vector<int> puntosDominantes;
     for(int i = 0; i < serieTemporal.numeroPuntosSerieTemporal(); i++)
     {
         puntosDominantes.push_back(i+1);
     }
+
     vector<long double> erroresDominantes;
     erroresDominantes.push_back(999);
-    for(int i = 1; i < puntosDominantes.size()-2; i++)
+    for(int i = 1; i < puntosDominantes.size()-1; i++)
     {
         long double ISE = serieTemporal.calcularIseEntreDosPuntos(i-1, i+1);
         erroresDominantes.push_back(ISE);
     }
     erroresDominantes.push_back(999);
 
-    //calcular punto error minimo : X
-    long double minimoISE;
-    int posicionISEMin;
-
-    minimoValorVector(erroresDominantes, minimoISE, posicionISEMin);
-    cout<<"1"<<endl;
     while(puntosDominantes.size() > segPoints)
     {
-        //cout<<"2"<<endl;
-        long double minISE;
-        int posicionISE; 
-        minimoValorVector(erroresDominantes, minISE, posicionISE);
-        puntosDominantes.erase(puntosDominantes.begin() + posicionISE);
-        erroresDominantes.erase(erroresDominantes.begin() + posicionISE);
-        
-        //CHECK QUE P-1 NO SEA 0 Y P NO SEA N-1 2 IFS
 
-        erroresDominantes[posicionISE-1] = serieTemporal.calcularIseEntreDosPuntos(posicionISE-2, posicionISE);
-        erroresDominantes[posicionISE] = serieTemporal.calcularIseEntreDosPuntos(posicionISE-1, posicionISE+1);
+        long double minError;
+        int posicionError; 
+        minimoValorVector(erroresDominantes, minError, posicionError);
 
-
+        puntosDominantes.erase(puntosDominantes.begin() + posicionError);
+        erroresDominantes.erase(erroresDominantes.begin() + posicionError);
+        cout<<"posicionError: "<<posicionError<<endl;
+        /*if(posicionError -1 != 0)
+        {
+            erroresDominantes[posicionError-1] = serieTemporal.calcularIseEntreDosPuntos(puntosDominantes[posicionError-2], puntosDominantes[posicionError]);            
+        }
+        if(posicionError +1 != puntosDominantes.size())
+        {
+            erroresDominantes[posicionError] = serieTemporal.calcularIseEntreDosPuntos(puntosDominantes[posicionError-1], puntosDominantes[posicionError+1]);
+        }*/
     }
 
-    //eliminar dominante[x] y errores[x]
+    for(int i = 0; i < puntosDominantes.size(); i++)
+    {
+        cout<<puntosDominantes[i]<<endl;
+    }
 
-    //puntosDominantes.erase(puntosDominantes.begin() + posicionISE -1);
-    //erroresDominantes.erase(erroresDominantes.begin() + posicionISE - 1);
-    
-    //calcular errores[x-1] y errores[x]
+    for(int i = 0; i < puntosDominantes.size(); i++)
+    {
+        serieTemporal.dominantePunto(puntosDominantes[i], true);
+    }
 
 }
 
-void algoritmoMinimizarEMax(SerieTemporal &serieTemporal, int izq, int der, double segPoints)
+void algoritmoMinimizarISE(SerieTemporal &serieTemporal, int izq, int der, double segPoints)
 {
-    int posicionISE = 0;
-    
-
-    serieTemporal.dominantePunto(posicionISE, false);
 }
 
 void metodo1()
@@ -96,9 +91,9 @@ void metodo1()
     char *nombreFicheroSalida = new char[nombreArchivoSalida.length() + 1];
     strcpy(nombreFicheroSalida, nombreArchivoSalida.c_str());
     SerieTemporal serieTemporal(nombreFicheroEntrada);
-
-    algoritmoMinimizarISE(serieTemporal, 0, serieTemporal.numeroPuntosSerieTemporal() - 1, 0.0);
-
+    
+    vector<int> puntosDominantes;
+    algoritmoMinimizarEMax(serieTemporal, 0, serieTemporal.numeroPuntosSerieTemporal() - 1, segPoints, puntosDominantes);
 
     serieTemporal.guardarSegmentacion(nombreFicheroSalida);
 
@@ -106,18 +101,17 @@ void metodo1()
     long double error;
     int posicionEMax;
 
-    serieTemporal.erroresSegmentacion(ISE, error, posicionEMax);
-
+    //serieTemporal.erroresSegmentacion(ISE, error, posicionEMax);
 
     cout <<"Numero de puntos dominantes: "<<serieTemporal.contarPuntosDominantes()<<endl;
-    cout <<"ISE: "<<ISE<<endl;
-    cout <<"Error maximo: "<<error<<endl;
-    cout <<"Punto del error maximo: "<<posicionEMax<<endl;
+    //cout <<"ISE: "<<ISE<<endl;
+    //cout <<"Error maximo: "<<error<<endl;
+    //cout <<"Punto del error maximo: "<<posicionEMax<<endl;
 }   
 
 void metodo2()
 {
-    cout <<"Introduzca el numero de puntos de la serie segmentada: ";
+     cout <<"Introduzca el numero de puntos de la serie segmentada: ";
     double segPoints; 
     cin >> segPoints;
 
@@ -134,14 +128,8 @@ void metodo2()
     char *nombreFicheroSalida = new char[nombreArchivoSalida.length() + 1];
     strcpy(nombreFicheroSalida, nombreArchivoSalida.c_str());
     SerieTemporal serieTemporal(nombreFicheroEntrada);
-    
-    for(int i = 0; i < serieTemporal.numeroPuntosSerieTemporal(); i++)
-    {
-        serieTemporal.dominantePunto(i, true);
-    }
 
-    algoritmoMinimizarEMax(serieTemporal, 0, serieTemporal.numeroPuntosSerieTemporal() - 1, 0.0);
-
+    algoritmoMinimizarISE(serieTemporal, 0, serieTemporal.numeroPuntosSerieTemporal() - 1, segPoints);
 
     serieTemporal.guardarSegmentacion(nombreFicheroSalida);
 
@@ -149,11 +137,11 @@ void metodo2()
     long double error;
     int posicionEMax;
 
-    serieTemporal.erroresSegmentacion(ISE, error, posicionEMax);
+    //serieTemporal.erroresSegmentacion(ISE, error, posicionEMax);
 
 
     cout <<"Numero de puntos dominantes: "<<serieTemporal.contarPuntosDominantes()<<endl;
-    cout <<"ISE: "<<ISE<<endl;
-    cout <<"Error maximo: "<<error<<endl;
-    cout <<"Punto del error maximo: "<<posicionEMax<<endl;
+    //cout <<"ISE: "<<ISE<<endl;
+    //cout <<"Error maximo: "<<error<<endl;
+    //cout <<"Punto del error maximo: "<<posicionEMax<<endl;
 }
