@@ -1,8 +1,8 @@
 #include "algoritmo.hpp"
-#include "serietemporal.cpp"
-#include "punto.cpp"
-#include "recta.cpp"
-#include <string>
+#include "serietemporal.hpp"
+#include "punto.hpp"
+#include "recta.hpp"
+#include <string.h>
 #include <vector>
 
 using namespace std;

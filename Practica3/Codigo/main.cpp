@@ -1,4 +1,5 @@
-#include "algoritmo.cpp"
+#include <iostream>
+#include "algoritmo.hpp"
 
 using namespace std;
 
