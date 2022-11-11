@@ -2,6 +2,8 @@
 #define ALGORITMO_HPP
 
 #include <iostream>
+#include <vector>
+#include "serietemporal.hpp"
 
 using namespace std;
 
@@ -9,6 +11,7 @@ void metodo1();
 
 void metodo2();
 
-segmentacionMinISE(serieTemporal serie, int segPoints);
+void segmentacionMinISE(SerieTemporal &serie, int segPoints);
+
 
 #endif

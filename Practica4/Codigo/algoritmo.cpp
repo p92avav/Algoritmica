@@ -1,26 +1,68 @@
 #include "algoritmo.hpp"
-#include "serietemporal.hpp"
 #include "punto.hpp"
 #include "recta.hpp"
 #include <string.h>
-#include <vector>
+#include "reloj.cpp"
 
 using namespace std;
 
-// Funcion que minimiza el ISE, usando programación dinamica para calcular la solcion optima a todos los subproblemas posibles hasta llegar a la solucion optima.
 
-segmentacionMinISE(SerieTemporal serie, int segPoints)
+void segmentacionMinISE(SerieTemporal &serie, int segPoints)
 {
-    int numeroPuntosSerie = serie.numeroPuntosSerieTemporal()
+    int N = serie.numeroPuntosSerieTemporal();
+    int M = segPoints;
 
-    vector <int> puntosDominantes;
+    vector< vector<double> > errores(N, vector<double>(N));
+    vector< vector<int> > padres(N, vector<int>(N));
 
-    
-
-    for(int i = 0; i < puntosDominantes.size();i++)
+    errores[0][0] = 0;
+    for(int i = 0; i < N; i++)
     {
-        serieTemporal.puntoDominante(puntosDominantes[i],true);
+        errores[i][0] = 9999;
     }
+
+    for(int i = 1; i < N; i++)
+    {
+        for(int j = 1; j < M; j++)
+        {
+            if(i < j)
+            {
+                errores[i][j] = 9999;
+            }
+            else
+            {
+                errores[i][j] = 9999;
+                for(int k = 0; k < i; k++)
+                {
+                    double error = errores[k][j-1] + serie.calcularIseEntreDosPuntos(k, i);
+                    if(error < errores[i][j])
+                    {
+                        errores[i][j] = error;
+                        padres[i][j] = k;
+                    }
+                }
+            }
+        }
+    }
+
+    vector<int> puntosDominantes;
+    
+    int aux = padres[N-1][M-1];
+    puntosDominantes.push_back(aux); 
+
+    for(int i = M-1; i > 0; i--)
+    {
+        puntosDominantes.push_back(padres[aux][i]);
+        aux = padres[aux][i];
+    }
+    puntosDominantes.push_back(N-1);
+
+    for(int i = 0; i < puntosDominantes.size(); i++)
+    {
+        serie.dominantePunto(puntosDominantes[i], true);
+    }
+
+    serie.mostrarPuntosDominantes();
 }
 
 void metodo1()
@@ -35,13 +77,19 @@ void metodo1()
     char *nombreFicheroEntrada = new char[nombreArchivo.length() + 1];
     strcpy(nombreFicheroEntrada, nombreArchivo.c_str());
 
+    cout << "Introduzca el nombre del archivo de salida: ";
+    string nombreArchivoSalida;
+    cin >> nombreArchivoSalida;
+    char *nombreFicheroSalida = new char[nombreArchivoSalida.length() + 1];
+    strcpy(nombreFicheroSalida, nombreArchivoSalida.c_str());
+
     Clock reloj;
     double tiempoEjec;
     
-    serieTemporal serie(nombreFicheroEntrada);
+    SerieTemporal serie(nombreFicheroEntrada);
 
     reloj.start();
-    segmentacionMinISE();       
+    segmentacionMinISE(serie, segPoints);       
     
     if(reloj.isStarted())
     {
@@ -49,10 +97,12 @@ void metodo1()
         tiempoEjec = reloj.elapsed();
     }
 
-    double ISE, eMax;
+    serie.guardarSegmentacion(nombreFicheroSalida);
+
+    long double ISE, eMax;
     int posicionEMax;
 
-    SerieTemporal.erroresSegmentacion(ISE, eMax, posicionEMax);
+    serie.erroresSegmentacion(ISE, eMax, posicionEMax);
 
     cout << "Tiempo de ejecucion: " << tiempoEjec << " segundos" << endl;
     cout << "ISE: " << ISE << endl;
@@ -63,4 +113,5 @@ void metodo1()
 
 void metodo2()
 {
+    cout<<"No implementado\n";
 }
