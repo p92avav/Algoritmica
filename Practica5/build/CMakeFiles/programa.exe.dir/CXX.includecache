@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/d/Descargas/Algoritmica-main/Algoritmica-main/Practica5/funcionesObligatorias.cpp
+funcionesObligatorias.hpp
+/mnt/d/Descargas/Algoritmica-main/Algoritmica-main/Practica5/funcionesObligatorias.hpp
+reloj.cpp
+/mnt/d/Descargas/Algoritmica-main/Algoritmica-main/Practica5/reloj.cpp
+
+/mnt/d/Descargas/Algoritmica-main/Algoritmica-main/Practica5/funcionesObligatorias.hpp
+iostream
+-
+vector
+-
+
+/mnt/d/Descargas/Algoritmica-main/Algoritmica-main/Practica5/reloj.cpp
+cassert
+-
+ctime
+-
+cstdio
+-
+cstring
+-
+iostream
+-
+stdint.h
+-
+

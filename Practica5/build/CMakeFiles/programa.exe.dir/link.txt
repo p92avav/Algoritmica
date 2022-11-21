@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3  -rdynamic CMakeFiles/programa.exe.dir/main.cpp.o CMakeFiles/programa.exe.dir/funcionesObligatorias.cpp.o  -o programa.exe 
