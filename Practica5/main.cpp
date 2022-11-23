@@ -27,7 +27,7 @@ void printMenu(int  & opc)
 
             case 3:
                 cout<<endl;
-                //solucionLasVegas();
+                metodo3();
                 break;
 
             default:

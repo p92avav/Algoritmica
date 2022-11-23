@@ -6,7 +6,7 @@
 
 using namespace std;
 
-//Necesito una struct para guardar las soluciones
+//Necesito una struct para guardar las soluciones?
 
 struct Tablero
 {
@@ -26,7 +26,7 @@ bool esValida(vector<int> solucionActual, int columna);
 
 void solucionUnicaNReinas(int n, vector<Tablero> &soluciones);
 
-void solucionLasVegas();
+void solucionLasVegas(int n, vector<Tablero> &soluciones);
 
 void mostrarSoluciones(vector<Tablero> soluciones);
 
