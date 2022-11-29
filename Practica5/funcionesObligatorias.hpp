@@ -26,7 +26,7 @@ bool esValida(vector<int> solucionActual, int columna);
 
 void solucionUnicaNReinas(int n, vector<Tablero> &soluciones);
 
-void solucionLasVegas(int n, vector<Tablero> &soluciones);
+bool solucionLasVegas(int n, vector<Tablero> &soluciones);
 
 void mostrarSoluciones(vector<Tablero> soluciones);
 

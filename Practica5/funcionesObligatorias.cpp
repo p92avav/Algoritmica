@@ -131,6 +131,8 @@ void solucionUnicaNReinas(int n, vector<Tablero> &soluciones)
 void metodo3()
 {
     int n = 0;
+    int intentos = 0;
+    bool encontrado = false;
 
     cout << "Introduzca el número de reinas: ";
     cin >> n;
@@ -143,8 +145,13 @@ void metodo3()
     srand(time(NULL));
 
     reloj.start();
-    solucionLasVegas(n, soluciones);
-
+    
+    while(encontrado == false)
+    {
+        intentos++;
+        encontrado = solucionLasVegas(n, soluciones);
+    }
+    
     if(reloj.isStarted())
     {
         reloj.stop();
@@ -153,38 +160,65 @@ void metodo3()
 
     mostrarSoluciones(soluciones);
 
+    cout<<endl<<"Intentos: "<<intentos<<endl<<endl;;
     cout << "Tiempo de ejecución: " << tiempoEjecucion << " microsegundos" << endl;
 }
 
-void solucionLasVegas(int n, vector<Tablero> &soluciones)
+bool solucionLasVegas(int n, vector<Tablero> &soluciones)
 {
-    int intentos = 0;
-    bool encontrada = false;
+    int contador = 0;
+    bool encontrado = false;
+
     vector<int> solucionActual(n + 1);
 
-    while(encontrada == false)
-    {
-        intentos++;
-        for(int i = 1; i <= n; i++)
-        {
-            solucionActual[i] = rand() % n + 1;
-        }
+    solucionActual[0] = 1; 
 
-        if(esValida(solucionActual, n))
-        {
-            Tablero solucion;
-            solucion.numSoluciones = intentos;
-            solucion.solucionActual = solucionActual;
-            soluciones.push_back(solucion);
-            encontrada = true;
-        }
+    for(int i = 1; i <= n; i++)
+    {
+        solucionActual[i] = 0;
     }
 
-    cout<<"Numero de intentos para encontrar la solucion: "<<intentos<<endl;
-}
-//Funciones auxiliares
+    vector<int> reinas(n + 1);
 
-//Funcion que comprueba si la posicion del caballo es valida
+    for(int i = 1; i <= n; i++)
+    {
+        contador = 0;
+
+        for(int j = 1; j <= n; j++)
+        {
+            solucionActual[i] = j;
+            if(esValida(solucionActual, i))
+            {
+                contador++;
+                reinas[contador] = j;
+            }
+        }
+
+        if(contador == 0)
+        {
+            break;
+        }
+        int columna = reinas[rand() % contador + 1];
+        solucionActual[i] = columna;
+    }
+
+    if(contador  == 0)
+    {
+        encontrado = false;
+    }
+    else
+    {
+        Tablero solucion;
+        solucion.numSoluciones = 1;
+        solucion.solucionActual = solucionActual;
+        soluciones.push_back(solucion);
+        encontrado = true;
+    }
+
+    return encontrado;
+}
+
+//Funciones auxiliares
 
 bool esValida(vector<int> solucionActual, int columna)
 {
